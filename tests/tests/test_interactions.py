@@ -3,7 +3,7 @@ import pytest
 from playwright.sync_api import expect
 
 from tests.framework import BaseTest
-from tests.framework.pages import DroppablePage, SelectablePage
+from tests.framework.pages import SelectablePage
 
 
 @allure.epic("DemoQA")
