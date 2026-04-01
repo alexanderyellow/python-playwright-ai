@@ -35,6 +35,7 @@ class PlaywrightConfig(BaseSettings):
     output_dir: str = "test-results"
     full_page_screenshot: bool = False
     fullscreen: bool = True
+    threads: int = Field(default=3, ge=0)
 
     model_config = SettingsConfigDict(
         env_prefix="PW_",

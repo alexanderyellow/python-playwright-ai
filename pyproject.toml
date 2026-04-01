@@ -9,6 +9,7 @@ dependencies = [
     "faker>=40.12.0",
     "playwright>=1.58.0",
     "pydantic-settings>=2.5.2",
+    "pytest-xdist>=3.8.0",
 ]
 
 [dependency-groups]
@@ -34,6 +35,8 @@ pw_timeout = "30000"
 pw_output_dir = "test-results"
 pw_full_page_screenshot = "false"
 pw_fullscreen = "true"
+
+pw_threads = "3"
 
 markers = [
     "smoke: Quick, critical path tests",

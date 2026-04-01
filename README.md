@@ -2,13 +2,16 @@
 
 UI test automation framework built with **Python 3.14+**, **Playwright**, **Pytest**, and **Allure**.
 
-Targets [DemoQA](https://demoqa.com/) using the Page Object Model pattern with strongly-typed configuration and modern tooling.
+Targets [DemoQA](https://demoqa.com/) using the Page Object Model pattern with strongly-typed configuration and modern
+tooling.
 
 ## Features
 
 - **Page Object Model** -- all UI interactions abstracted into page objects with method chaining (`Self` return types)
-- **Allure Reporting** -- epics, features, stories, severity levels, step-level tracing, failure screenshots, environment metadata
+- **Allure Reporting** -- epics, features, stories, severity levels, step-level tracing, failure screenshots,
+  environment metadata
 - **Pydantic Settings** -- typed configuration with validation, env var overrides (`PW_*`), `.env` file support
+- **Parallel Execution** -- pytest-xdist with configurable thread count (`PW_THREADS`)
 - **Pytest Markers** -- `smoke` for critical path, `regression` for full suite, `parametrize` for data-driven tests
 - **Faker** -- dynamic test data generation via session-scoped fixture
 - **Playwright** -- auto-waiting, tracing, screenshots, and video on failure
@@ -72,20 +75,21 @@ Managed via `PlaywrightConfig` in `tests/framework/config/settings.py` using `py
 
 **Priority order:** OS env variables (`PW_*`) > `.env` file > `pyproject.toml` > defaults.
 
-| Variable | Default | Description |
-|---|---|---|
-| `PW_BROWSER` | `chromium` | Browser engine (`chromium`, `firefox`, `webkit`) |
-| `PW_HEADLESS` | `true` | Run in headless mode |
-| `PW_BASE_URL` | `https://demoqa.com` | Base URL for all tests |
-| `PW_TIMEOUT` | `30000` | Default timeout in milliseconds |
-| `PW_VIEWPORT_WIDTH` | `1280` | Browser viewport width (320-3840) |
-| `PW_VIEWPORT_HEIGHT` | `720` | Browser viewport height (240-2160) |
-| `PW_SLOWMO` | `0` | Slow down actions by ms |
-| `PW_TRACING` | `retain-on-failure` | Playwright tracing mode |
-| `PW_SCREENSHOT` | `only-on-failure` | Screenshot capture mode |
-| `PW_VIDEO` | `retain-on-failure` | Video recording mode |
-| `PW_OUTPUT_DIR` | `test-results` | Output directory for artifacts |
-| `PW_FULLSCREEN` | `false` | Run in fullscreen mode |
+| Variable             | Default              | Description                                      |
+|----------------------|----------------------|--------------------------------------------------|
+| `PW_BROWSER`         | `chromium`           | Browser engine (`chromium`, `firefox`, `webkit`) |
+| `PW_HEADLESS`        | `true`               | Run in headless mode                             |
+| `PW_BASE_URL`        | `https://demoqa.com` | Base URL for all tests                           |
+| `PW_TIMEOUT`         | `30000`              | Default timeout in milliseconds                  |
+| `PW_VIEWPORT_WIDTH`  | `1280`               | Browser viewport width (320-3840)                |
+| `PW_VIEWPORT_HEIGHT` | `720`                | Browser viewport height (240-2160)               |
+| `PW_SLOWMO`          | `0`                  | Slow down actions by ms                          |
+| `PW_TRACING`         | `retain-on-failure`  | Playwright tracing mode                          |
+| `PW_SCREENSHOT`      | `only-on-failure`    | Screenshot capture mode                          |
+| `PW_VIDEO`           | `retain-on-failure`  | Video recording mode                             |
+| `PW_OUTPUT_DIR`      | `test-results`       | Output directory for artifacts                   |
+| `PW_FULLSCREEN`      | `false`              | Run in fullscreen mode                           |
+| `PW_THREADS`         | `3`                  | Number of parallel xdist workers (0 to disable)  |
 
 Override via environment:
 
@@ -96,7 +100,7 @@ PW_HEADLESS=false PW_BROWSER=firefox uv run pytest
 ## Running Tests
 
 ```bash
-# Run all tests
+# Run all tests (3 parallel workers by default)
 uv run pytest
 
 # Run smoke tests only
@@ -111,8 +115,14 @@ uv run pytest tests/tests/test_elements.py
 # Run by keyword
 uv run pytest -k "test_search"
 
-# Run headed (visible browser)
-PW_HEADLESS=false uv run pytest
+# Run headed (visible browser) with 3 parallel workers
+PW_HEADLESS=false uv run pytest -n=3
+
+# Run with custom number of parallel workers
+PW_THREADS=5 uv run pytest
+
+# Run sequentially (disable parallel execution)
+uv run pytest -n=0
 ```
 
 ## Allure Reports
@@ -126,6 +136,7 @@ allure serve allure-results
 ```
 
 The report includes:
+
 - **Epic/Feature/Story** hierarchy matching the DemoQA application structure
 - **Severity levels** (CRITICAL, NORMAL) on each test
 - **Step-level tracing** from page object `@allure.step()` decorators
@@ -143,17 +154,15 @@ GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and PR t
 
 Test artifacts (screenshots, traces, videos) are uploaded on failure. Allure results are uploaded for all runs.
 
-To enable the Allure report deployment, configure GitHub Pages to use GitHub Actions as the source in repository Settings > Pages.
-
 ## Code Quality
 
 ```bash
 # Lint
-uv run ruff check tests/ main.py
+uv run ruff check tests/
 
 # Format
-uv run black tests/ main.py
+uv run black tests/
 
 # Type check
-uv run mypy tests/ main.py
+uv run mypy tests/
 ```

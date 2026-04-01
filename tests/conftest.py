@@ -28,6 +28,7 @@ def pytest_addoption(parser: Parser) -> None:
     parser.addini("pw_output_dir", "Playwright output dir")
     parser.addini("pw_full_page_screenshot", "Full page screenshot")
     parser.addini("pw_fullscreen", "Full screen mode")
+    parser.addini("pw_threads", "Number of parallel xdist workers (0 to disable)")
 
 
 def pytest_configure(config: Config) -> None:
@@ -44,6 +45,11 @@ def pytest_configure(config: Config) -> None:
     config.option.video = pw_config.video
     config.option.output = pw_config.output_dir
     config.option.full_page_screenshot = pw_config.full_page_screenshot
+
+    # Configure pytest-xdist parallel workers
+    if pw_config.threads > 0 and not config.option.numprocesses:
+        config.option.numprocesses = pw_config.threads
+        config.option.dist = "loadgroup"
 
 
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
