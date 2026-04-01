@@ -178,5 +178,4 @@ def page(page: Page, pw_config: PlaywrightConfig) -> Generator[Page, None, None]
         observer.observe(document.documentElement, {childList: true, subtree: true});
     """)
 
-
     yield page
