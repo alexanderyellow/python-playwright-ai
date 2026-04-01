@@ -57,14 +57,6 @@ jobs:
         env:
           PW_BROWSER: ${{ matrix.browser }}
 
-      - name: Upload Playwright Traces
-        uses: actions/upload-artifact@v6
-        if: failure()
-        with:
-          name: playwright-traces-${{ matrix.browser }}
-          path: build/playwright-traces/
-          retention-days: 7
-
       - name: Upload allure results
         if: always()
         uses: actions/upload-artifact@v6
