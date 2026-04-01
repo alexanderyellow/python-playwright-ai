@@ -24,13 +24,13 @@ jobs:
         run: uv sync --all-groups
 
       - name: Ruff check
-        run: uv run ruff check tests/ main.py
+        run: uv run ruff check tests/
 
       - name: Black check
-        run: uv run black --check tests/ main.py
+        run: uv run black --check tests/
 
       - name: Mypy
-        run: uv run mypy tests/ main.py
+        run: uv run mypy tests/
 
   test:
     name: Tests (${{ matrix.browser }})
