@@ -23,13 +23,12 @@ jobs:
       pull-requests: write
       issues: write
       id-token: write
-      actions: read # Required for Claude to read CI results on PRs
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Claude Code
         id: claude
@@ -44,16 +43,9 @@ jobs:
           # assignee_trigger: "claude-bot"
 
           # Optional: Configure Claude's behavior with CLI arguments
+          # In v1.0, model/allowed_tools/system prompt all go through claude_args:
           # claude_args: |
-          #   --model claude-opus-4-1-20250805
+          #   --model claude-sonnet-4-6
           #   --max-turns 10
           #   --allowedTools "Bash(npm install),Bash(npm run build),Bash(npm run test:*),Bash(npm run lint:*)"
-          #   --system-prompt "Follow our coding standards. Ensure all new code has tests. Use TypeScript for new files."
-
-          # Optional: Advanced settings configuration
-          # settings: |
-          #   {
-          #     "env": {
-          #       "NODE_ENV": "test"
-          #     }
-          #   }
+          #   --append-system-prompt "Follow our coding standards. Ensure all new code has tests. Use TypeScript for new files."
