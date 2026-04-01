@@ -77,49 +77,31 @@ jobs:
     name: Allure Report
     runs-on: ubuntu-latest
     needs: test
-    if: always() && github.ref == 'refs/heads/main'
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Download allure results
-        uses: actions/download-artifact@v4
+      - name: Upload Playwright Traces
+        uses: actions/upload-artifact@v6
+        if: failure()
         with:
-          pattern: allure-results-*
-          path: allure-results
-          merge-multiple: true
+          name: playwright-traces
+          path: build/playwright-traces/
+          retention-days: 7
 
-      - name: Get previous report history
-        continue-on-error: true
-        run: |
-          git fetch origin gh-pages || true
-          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
-            git worktree add gh-pages-branch origin/gh-pages
-            if [ -d gh-pages-branch/history ]; then
-              mkdir -p allure-results/history
-              cp -r gh-pages-branch/history/* allure-results/history/
-            fi
-            git worktree remove gh-pages-branch
-          fi
+      - name: Generate Allure Report
+        if: always()
+        run: ./gradlew allureReport
 
-      - name: Install Allure CLI
-        run: |
-          curl -sL https://github.com/allure-framework/allure2/releases/download/2.34.0/allure-2.34.0.tgz | tar -xz
-          echo "$PWD/allure-2.34.0/bin" >> $GITHUB_PATH
-
-      - name: Generate Allure report
-        run: allure generate allure-results -o allure-report --clean
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload Allure Results
+        if: always()
+        uses: actions/upload-artifact@v6
         with:
-          path: allure-report
+          name: allure-results
+          path: build/allure-results
+          retention-days: 20
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: allure-report
+          path: build/reports/allure-report
+          retention-days: 20
