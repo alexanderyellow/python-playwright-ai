@@ -22,7 +22,7 @@ dev = [
 
 [tool.pytest.ini_options]
 pw_browser = "chromium"
-pw_headless = "false"
+pw_headless = "true"
 pw_base_url = "https://demoqa.com"
 pw_tracing = "retain-on-failure"
 pw_screenshot = "only-on-failure"
