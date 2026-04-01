@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.venv/
+
+# Testing
+.pytest_cache/
+test-results/
+allure-results/
+allure-report/
+
+# Linting / Type checking
+.ruff_cache/
+.mypy_cache/
+
+# IDE
+.idea/
+
+# Local MCP config
+.mcp.local.json
+
+# Environment variables
+.env
