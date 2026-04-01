@@ -57,6 +57,14 @@ jobs:
         env:
           PW_BROWSER: ${{ matrix.browser }}
 
+      - name: Upload Playwright Traces
+        uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: playwright-traces-${{ matrix.browser }}
+          path: build/playwright-traces/
+          retention-days: 7
+
       - name: Upload allure results
         if: always()
         uses: actions/upload-artifact@v6
@@ -72,37 +80,3 @@ jobs:
           name: test-results-${{ matrix.browser }}
           path: test-results/
           retention-days: 30
-
-  allure-report:
-    name: Allure Report
-    runs-on: ubuntu-latest
-    needs: test
-    if: always() && github.ref == 'refs/heads/main'
-    steps:
-      - name: Upload Playwright Traces
-        uses: actions/upload-artifact@v6
-        if: failure()
-        with:
-          name: playwright-traces
-          path: build/playwright-traces/
-          retention-days: 7
-
-      - name: Generate Allure Report
-        if: always()
-        run: ./gradlew allureReport
-
-      - name: Upload Allure Results
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: allure-results
-          path: build/allure-results
-          retention-days: 20
-
-      - name: Upload Allure Report
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: allure-report
-          path: build/reports/allure-report
-          retention-days: 20
