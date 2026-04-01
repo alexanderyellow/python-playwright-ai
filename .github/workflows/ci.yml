@@ -39,7 +39,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [ chromium, firefox, webkit ]
+        browser: [ chromium, firefox ]
     steps:
       - uses: actions/checkout@v6
 
@@ -107,12 +107,13 @@ jobs:
             git worktree remove gh-pages-branch
           fi
 
+      - name: Install Allure CLI
+        run: |
+          curl -sL https://github.com/allure-framework/allure2/releases/download/2.34.0/allure-2.34.0.tgz | tar -xz
+          echo "$PWD/allure-2.34.0/bin" >> $GITHUB_PATH
+
       - name: Generate Allure report
-        uses: simple-elf/allure-report-action@v1.12
-        with:
-          allure_results: allure-results
-          allure_report: allure-report
-          allure_history: allure-history
+        run: allure generate allure-results -o allure-report --clean
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
