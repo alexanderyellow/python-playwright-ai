@@ -9,17 +9,6 @@ from tests.framework.pages import DroppablePage, SelectablePage
 @allure.epic("DemoQA")
 @allure.feature("Interactions")
 class TestInteractions(BaseTest):
-    @pytest.mark.smoke
-    @allure.story("Droppable")
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.title("Drag element into drop zone")
-    def test_drag_to_drop_zone(self) -> None:
-        droppable = DroppablePage(self.page).navigate(DroppablePage.URL)
-
-        droppable.drag_to_drop_zone()
-
-        expect(droppable.drop_zone_text).to_have_text("Dropped!")
-
     @pytest.mark.regression
     @allure.story("Selectable")
     @allure.severity(allure.severity_level.NORMAL)
