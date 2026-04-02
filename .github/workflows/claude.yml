@@ -39,17 +39,17 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          claude_args: |
-            --model claude-sonnet-4-6
-            --max-turns 25
-            --allowedTools "Read,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3)"
-          custom_instructions: |
+          prompt: |
             You are in ANALYSIS-ONLY mode. Do NOT edit, write, or create any files.
             Your job is to:
             1. Read and analyze the code changes or issue description.
             2. Identify problems, suggest improvements, or propose an implementation plan.
             3. Post your findings as a comment with a clear summary of proposed changes.
             4. End your comment with: "Reply `@claude apply` to approve and apply these changes."
+          claude_args: |
+            --model claude-sonnet-4-6
+            --max-turns 25
+            --allowedTools "Read,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3)"
 
   # Phase 2: Apply changes (triggered by "@claude apply" comment)
   claude-apply:
