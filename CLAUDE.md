@@ -22,6 +22,13 @@ Utilizing modern approaches and libraries.
 - Use `sync_api` for Playwright operations
 - Use `expect()` for all assertions (auto-retrying)
 
+## When responding to PR comments:
+
+- Always analyze the actual code diff and explain what changed
+- If asked about errors, check if the change could break tests or CI
+- When a fix is needed, implement it and push a commit
+- Always reply with your findings in the comment thread
+
 ## Critical Rules
 
 - NEVER commit secrets or `.env` files
