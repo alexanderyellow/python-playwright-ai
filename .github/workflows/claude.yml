@@ -54,6 +54,7 @@ jobs:
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
             You are in ANALYSIS-ONLY mode. Do NOT edit, write, or create any files.
@@ -65,7 +66,7 @@ jobs:
           claude_args: |
             --model claude-sonnet-4-6
             --max-turns 25
-            --allowedTools "Read,Write,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3)"
+            --allowedTools "Read,Write,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3),Bash(gh pr comment:*),Bash(gh issue comment:*),Bash(gh pr view:*),Bash(gh issue view:*)"
 
   # Phase 2: Apply changes (triggered by "@claude apply" comment)
   claude-apply:
@@ -91,6 +92,7 @@ jobs:
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
             You are in APPLY mode. 
@@ -100,7 +102,7 @@ jobs:
           claude_args: |
             --model claude-sonnet-4-6
             --max-turns 25
-            --allowedTools "Edit,Write,Replace,Read,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3)"
+            --allowedTools "Edit,Write,Replace,Read,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3),Bash(gh pr comment:*),Bash(gh issue comment:*),Bash(gh pr view:*),Bash(gh issue view:*)"
 
       - name: Commit and Push Changes
         env:
