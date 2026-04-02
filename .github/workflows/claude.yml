@@ -56,7 +56,7 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           display_report: true
           prompt: |
-            You are in APPLY mode.
+            You are in ANALYSIS-ONLY mode.
             Your job is to:
             1. Read and analyze the code changes or the user's comment in this thread.
             2. Identify problems, suggest improvements, or propose an implementation plan.
