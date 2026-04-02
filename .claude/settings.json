@@ -1,0 +1,49 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__github__search_repositories",
+      "mcp__github__search_issues",
+      "mcp__github__search_code",
+      "mcp__github__get_issue",
+      "mcp__github__get_file_contents",
+      "mcp__github__list_commits",
+      "mcp__github__list_issues",
+      "mcp__github__create_issue",
+      "mcp__github__update_issue",
+      "mcp__github__create_pull_request",
+      "mcp__github__create_or_update_file",
+      "mcp__github__push_files",
+      "mcp__memory__browser_navigate",
+      "mcp__memory__browser_take_screenshot",
+      "mcp__memory__browser_click",
+      "mcp__memory__browser_fill_form",
+      "mcp__memory__browser_type",
+      "mcp__memory__browser_wait_for",
+      "mcp__memory__browser_snapshot",
+      "mcp__memory__browser_hover",
+      "mcp__memory__browser_press_key",
+      "mcp__memory__browser_select_option",
+      "Bash(uv run:*)",
+      "mcp__filesystem__directory_tree",
+      "mcp__filesystem__list_directory_with_sizes",
+      "Bash(find /Users/aliaksandrsheikin/MyProjects/python-playwright-ai/tests -name \"*.py\" -type f ! -path \"*/__pycache__/*\" ! -path \"*/.venv/*\" -exec ls -lh {})",
+      "Bash(sort -k2)",
+      "Bash(wc:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(uv add:*)",
+      "Bash(gh api:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true
+  },
+  "enabledMcpJsonServers": [
+    "github",
+    "filesystem",
+    "memory"
+  ]
+}
