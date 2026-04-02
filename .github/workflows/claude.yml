@@ -15,6 +15,8 @@ on:
     types: [ opened, assigned ]
   pull_request:
     types: [ opened, assigned ]
+  pull_request_review:
+    types: [ submitted ]
 
 jobs:
   # Phase 1: Analyze and propose changes (read-only, no edits)
