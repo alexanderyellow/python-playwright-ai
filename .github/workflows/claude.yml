@@ -54,9 +54,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          show_full_output: true
+          display_report: true
           prompt: |
-            You are in ANALYSIS-ONLY mode. Do NOT edit, write, or create any files.
+            You are in ANALYSIS-ONLY mode.
             Your job is to:
             1. Read and analyze the code changes or the user's comment in this thread.
             2. Identify problems, suggest improvements, or propose an implementation plan.
@@ -92,7 +92,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          show_full_output: true
+          display_report: true
           prompt: |
             You are in APPLY mode. 
             1. Read the previous conversation in this PR thread.
