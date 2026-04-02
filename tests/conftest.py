@@ -49,6 +49,7 @@ def pytest_configure(config: Config) -> None:
     # Configure pytest-xdist parallel workers
     if pw_config.threads > 0 and not config.option.numprocesses:
         config.option.numprocesses = pw_config.threads
+    if config.option.numprocesses:
         config.option.dist = "loadgroup"
 
 
