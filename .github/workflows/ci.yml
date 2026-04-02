@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -53,7 +53,7 @@ jobs:
         run: uv run playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run tests
-        run: uv run pytest --alluredir=allure-results
+        run: uv run pytest --alluredir=allure-results -n=3
         env:
           PW_BROWSER: ${{ matrix.browser }}
 
