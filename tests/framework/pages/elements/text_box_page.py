@@ -11,9 +11,9 @@ class TextBoxPage(BasePage):
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)
-        self.full_name_input = page.get_by_placeholder("Full Nme")
+        self.full_name_input = page.get_by_placeholder("Full Name")
         self.email_input = page.get_by_placeholder("name@example.com")
-        self.current_address_input = page.get_by_placeholder("Current Addrss")
+        self.current_address_input = page.get_by_placeholder("Current Address")
         self.permanent_address_input = page.locator("#permanentAddress")
         self.submit_button = page.get_by_role("button", name="Submit")
         self.output_name = page.locator("#name")
