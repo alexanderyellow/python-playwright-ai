@@ -149,10 +149,25 @@ The report includes:
 GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and PR to `main`:
 
 1. **Lint & Type Check** -- Ruff, Black, Mypy
-2. **Tests** -- parallel matrix across Chromium, Firefox, and WebKit
+2. **Tests** -- parallel matrix across Chromium and Firefox
 3. **Allure Report** -- generated and deployed to GitHub Pages (main branch only)
 
 Test artifacts (screenshots, traces, videos) are uploaded on failure. Allure results are uploaded for all runs.
+
+## Claude Code Integration
+
+`claude.yml` implements a two-phase AI-assisted workflow via [Claude Code Action](https://github.com/anthropics/claude-code-action):
+
+**Phase 1 — Analyze** (read-only)
+
+Triggered automatically on PRs, or when a PR review or issue body contains `@claude`. Claude reads the diff or issue, identifies problems and improvements, and posts a summary comment ending with:
+> "Reply `@claude apply` to approve and apply these changes."
+
+**Phase 2 — Apply**
+
+Triggered when `@claude` appears in an issue comment or PR review comment. Claude applies the proposed changes directly to the branch.
+
+Both phases use `claude-sonnet-4-6` with up to 25 turns.
 
 ## Code Quality
 
