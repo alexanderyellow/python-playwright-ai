@@ -16,8 +16,16 @@ on:
 
 jobs:
   # Phase 1: Analyze and propose changes (read-only, no edits)
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        run: |
+          echo "Triggered by event: ${{ github.event_name }}"
+          echo "Comment body: ${{ github.event.comment.body }}"
+          echo "Hello from the GitHub Actions runner! 🚀"
   claude-analyze:
-    if: >
+    if: |
       github.event_name == 'pull_request' ||
       (
         (github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment') &&
@@ -59,7 +67,7 @@ jobs:
 
   # Phase 2: Apply changes (triggered by "@claude apply" comment)
   claude-apply:
-    if: >
+    if: |
       github.event_name == 'pull_request' ||
       (
         (github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment') &&
