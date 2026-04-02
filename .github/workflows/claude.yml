@@ -27,7 +27,6 @@ jobs:
           echo "Triggered by event: ${{ github.event_name }}"
           echo "Action: ${{ github.event.action }}"
           echo "Comment body: ${{ github.event.comment.body }}"
-          echo "Review body: ${{ github.event.review.body }}"
           echo "Hello from the GitHub Actions runner! 🚀"
   claude-analyze:
     if: |
