@@ -16,12 +16,21 @@ on:
 
 jobs:
   # Phase 1: Analyze and propose changes (read-only, no edits)
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        run: |
+          echo "Triggered by event: ${{ github.event_name }}"
+          echo "Comment body: ${{ github.event.comment.body }}"
+          echo "Hello from the GitHub Actions runner! 🚀"
   claude-analyze:
     if: |
-      github.event.issue.pull_request || github.event_name == 'pull_request' && 
+      github.event_name == 'pull_request' ||
       (
-        github.event_name == 'pull_request' || 
-        (contains(github.event.comment.body, '@claude') && !contains(github.event.comment.body, '@claude apply'))
+        (github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment') &&
+        contains(github.event.comment.body, '@claude') &&
+        !contains(github.event.comment.body, '@claude apply')
       )
     runs-on: ubuntu-latest
     env:
@@ -59,9 +68,12 @@ jobs:
   # Phase 2: Apply changes (triggered by "@claude apply" comment)
   claude-apply:
     if: |
-      (github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment') &&
-      github.event.issue.pull_request &&
-      contains(github.event.comment.body, '@claude apply')
+      github.event_name == 'pull_request' ||
+      (
+        (github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment') &&
+        contains(github.event.comment.body, '@claude') &&
+        !contains(github.event.comment.body, '@claude apply')
+      )
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
