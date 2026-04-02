@@ -42,7 +42,7 @@ jobs:
           fetch-depth: 1
 
       - name: Checkout PR branch (if triggered by comment)
-        if: github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment'
+        if: github.event_name == 'pull_request_review_comment'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # GitHub Actions runs comments on `main`. We must pull down the PR branch.
@@ -56,12 +56,13 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           display_report: true
           prompt: |
-            You are in ANALYSIS-ONLY mode.
+            You are in APPLY mode.
             Your job is to:
             1. Read and analyze the code changes or the user's comment in this thread.
             2. Identify problems, suggest improvements, or propose an implementation plan.
-            3. Post your findings as a comment with a clear summary of proposed changes.
-            4. End your comment with: "Reply `@claude apply` to approve and apply these changes."
+            3. Write the answer in the appropriate thread.
+            4. End your reply with: "Reply `@claude apply` to approve and apply these changes."
+          track_progress: true
           claude_args: |
             --model claude-sonnet-4-6
             --max-turns 25
