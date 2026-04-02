@@ -14,8 +14,6 @@ on:
     types: [ created ]
   pull_request_review:
     types: [ submitted ]
-  pull_request:
-    types: [ opened, synchronize, edited, review_requested, assigned ]
 
 jobs:
   # Phase 1: Analyze and propose changes (read-only, no edits)
@@ -39,7 +37,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -66,7 +64,7 @@ jobs:
           claude_args: |
             --model claude-sonnet-4-6
             --max-turns 25
-            --allowedTools "Read,Write,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3),Bash(gh pr comment:*),Bash(gh issue comment:*),Bash(gh pr view:*),Bash(gh issue view:*)"
+            --allowedTools "Read,Write,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3),Bash(gh *)"
 
   # Phase 2: Apply changes (triggered by "@claude apply" comment)
   claude-apply:
@@ -79,7 +77,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -102,7 +100,7 @@ jobs:
           claude_args: |
             --model claude-sonnet-4-6
             --max-turns 25
-            --allowedTools "Edit,Write,Replace,Read,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3),Bash(gh pr comment:*),Bash(gh issue comment:*),Bash(gh pr view:*),Bash(gh issue view:*)"
+            --allowedTools "Edit,Write,Replace,Read,Glob,Grep,Bash(uv run pytest),Bash(uv run pytest -n=3),Bash(gh *)"
 
       - name: Commit and Push Changes
         env:
