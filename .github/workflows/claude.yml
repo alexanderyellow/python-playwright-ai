@@ -23,6 +23,7 @@ jobs:
   claude-analyze:
     if: |
       (github.event_name == 'pull_request') ||
+      (github.event_name == 'pull_request_review' && contains(github.event.issue.body, '@claude')) ||
       (github.event_name == 'issues' && contains(github.event.issue.body, '@claude'))
     runs-on: ubuntu-latest
     env:
